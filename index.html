@@ -1184,8 +1184,8 @@ cocotb.<span class="fn">start_soon</span>(<span class="fn">monitor</span>())</co
         <div class="code-header">Jenkinsfile: lint, model tests, RTL on two simulators <a class="src-link" href="https://github.com/BrendanJamesLynskey/RTL_CoSim_NTT/blob/main/Jenkinsfile">source</a></div>
         <pre><code><span class="kw">stage</span>(<span class="str">'Lint'</span>) {
     <span class="kw">steps</span> {
-        <span class="kw">sh</span> <span class="str">'verilator --lint-only -Wall rtl/*.sv --top-module ntt_core'</span>
-        <span class="kw">sh</span> <span class="str">'verilator --lint-only -Wall -GP=4 rtl/*.sv --top-module ntt_core'</span>
+        <span class="kw">sh</span>(env.VPATH + <span class="str">'verilator --lint-only -Wall rtl/*.sv --top-module ntt_core'</span>)
+        <span class="kw">sh</span>(env.VPATH + <span class="str">'verilator --lint-only -Wall -GP=4 rtl/*.sv --top-module ntt_core'</span>)
         <span class="kw">sh</span> <span class="str">'iverilog -g2012 -o /dev/null rtl/*.sv'</span>
     }
 }
@@ -1199,13 +1199,13 @@ cocotb.<span class="fn">start_soon</span>(<span class="fn">monitor</span>())</co
 
 <span class="kw">stage</span>(<span class="str">'RTL tests (Verilator)'</span>) {
     <span class="kw">steps</span> {
-        <span class="kw">sh</span> <span class="str">"SIM=verilator NIGHTLY=${params.NIGHTLY ? 1 : 0} .venv/bin/pytest -m rtl --junitxml=pytest-verilator.xml"</span>
+        <span class="kw">sh</span>(env.VPATH + <span class="str">"SIM=verilator NIGHTLY=${params.NIGHTLY ? 1 : 0} .venv/bin/pytest -m rtl --junitxml=pytest-verilator.xml"</span>)
     }
 }
 
 <span class="kw">stage</span>(<span class="str">'RTL tests (Icarus)'</span>) {
     <span class="kw">steps</span> {
-        <span class="kw">sh</span> <span class="str">'SIM=icarus .venv/bin/pytest -m rtl --junitxml=pytest-icarus.xml'</span>
+        <span class="kw">sh</span>(env.VPATH + <span class="str">'SIM=icarus .venv/bin/pytest -m rtl --junitxml=pytest-icarus.xml'</span>)
     }
 }
 
